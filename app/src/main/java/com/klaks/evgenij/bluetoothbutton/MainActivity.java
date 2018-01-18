@@ -2,9 +2,10 @@ package com.klaks.evgenij.bluetoothbutton;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanFilter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,17 +19,12 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "BluetoothButton";
+public class MainActivity extends AppCompatActivity implements DevicesAdapter.DevicesAdapterListener, ButtonWorking.ButtonWorkingListener {
 
     private final static int REQUEST_ENABLE_BT = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -36,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothLeScanner bluetoothLeScanner;
     private BluetoothAdapter bluetoothAdapter;
     private ScanCallback scanCallback = new ScanCallback();
+    private ButtonWorking bluetoothCallback = new ButtonWorking(this);
 
     private RecyclerView recyclerView;
     private DevicesAdapter devicesAdapter;
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration decoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         recyclerView.addItemDecoration(decoration);
-        devicesAdapter = new DevicesAdapter();
+        devicesAdapter = new DevicesAdapter(this);
         recyclerView.setAdapter(devicesAdapter);
 
 
@@ -74,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }, 0, 2, TimeUnit.SECONDS);
-
 
     }
 
@@ -141,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void startScan() {
         if (!scannerIsOn) {
             if (bluetoothLeScanner == null) {
@@ -155,5 +150,15 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
+    }
+
+    @Override
+    public void onDeviceClick(BluetoothDevice bluetoothDevice) {
+        bluetoothDevice.connectGatt(this, false, bluetoothCallback);
+    }
+
+    @Override
+    public void onResponseIsReceived(String response) {
+
     }
 }

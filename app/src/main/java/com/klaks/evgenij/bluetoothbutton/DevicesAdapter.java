@@ -14,13 +14,21 @@ import java.util.List;
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Holder> {
 
     private List<BluetoothDevice> devices = new ArrayList<>();
+    private DevicesAdapterListener listener;
+
+    public DevicesAdapter(DevicesAdapterListener listener) {
+        this.listener = listener;
+    }
 
     static class Holder extends RecyclerView.ViewHolder {
 
+        View itemView;
         TextView name;
 
         public Holder(View itemView) {
             super(itemView);
+            itemView.setClickable(true);
+            this.itemView = itemView;
             name = itemView.findViewById(R.id.name);
         }
     }
@@ -33,8 +41,14 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Holder> 
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        BluetoothDevice device = devices.get(position);
+        final BluetoothDevice device = devices.get(position);
         holder.name.setText(device.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onDeviceClick(device);
+            }
+        });
     }
 
     @Override
@@ -45,5 +59,9 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.Holder> 
     public void setDevices(List<BluetoothDevice> devices) {
         this.devices = devices;
         notifyDataSetChanged();
+    }
+
+    public interface DevicesAdapterListener {
+        void onDeviceClick(BluetoothDevice bluetoothDevice);
     }
 }

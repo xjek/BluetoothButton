@@ -11,11 +11,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.klaks.evgenij.bluetoothbutton.Common.BUTTON_PREFIX;
+
 public class ScanCallback extends android.bluetooth.le.ScanCallback {
 
 
 
-    private static final String BUTTON_PREFIX = "klaks";
+
     private static final Pattern pattern = Pattern.compile("^" + BUTTON_PREFIX + ".*");
 
     private Map<String, BluetoothDevice> devices = Collections.synchronizedMap(new HashMap<String, BluetoothDevice>());
