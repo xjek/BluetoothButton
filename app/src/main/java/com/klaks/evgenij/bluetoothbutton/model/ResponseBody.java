@@ -2,7 +2,7 @@ package com.klaks.evgenij.bluetoothbutton.model;
 
 import java.util.List;
 
-public class Result {
+public class ResponseBody {
     private int status = 0;
     private Button button;
     private Organization organization;
@@ -38,5 +38,15 @@ public class Result {
 
     public void setTovars(List<Tovar> tovars) {
         this.tovars = tovars;
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseBody{" +
+                "status=" + status +
+                ", button=" + button +
+                ", organization=" + organization +
+                ", tovars=" + tovars +
+                '}';
     }
 }

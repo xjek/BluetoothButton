@@ -20,9 +20,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.klaks.evgenij.bluetoothbutton.model.ResponseBody;
+import com.klaks.evgenij.bluetoothbutton.network.ApiFactory;
+import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity implements DevicesAdapter.DevicesAdapterListener, ButtonWorking.ButtonWorkingListener {
 
@@ -159,6 +165,18 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
 
     @Override
     public void onResponseIsReceived(String response) {
-
+        ApiFactory.getService().infoButton(response)
+                .compose(new HelpTransformer<ResponseBody>())
+                .subscribe(new Consumer<ResponseBody>() {
+                    @Override
+                    public void accept(ResponseBody responseBody) throws Exception {
+                        System.out.println(responseBody);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                });
     }
 }
