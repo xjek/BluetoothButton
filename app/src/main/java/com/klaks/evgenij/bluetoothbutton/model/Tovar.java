@@ -1,11 +1,14 @@
 package com.klaks.evgenij.bluetoothbutton.model;
 
+import java.util.Locale;
+
 public class Tovar {
     private int id = 0;
     private String name = "";
     private String image = "";
     private double price = 0.0;
     private String description = "";
+    private int count = 0;
 
     public int getId() {
         return id;
@@ -45,5 +48,29 @@ public class Tovar {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getTotalPrice() {
+        return String.format(Locale.getDefault(),"%3.2f р.", count * price);
+    }
+
+    @Override
+    public String toString() {
+        return "Tovar{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", count=" + count +
+                '}';
     }
 }

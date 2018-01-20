@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">BluetoothButton</string>
+    <string name="app_name">Klaks</string>
+    <string name="supplier">Поставщик:</string>
+    <string name="product_group">Группа товаров:</string>
 </resources>

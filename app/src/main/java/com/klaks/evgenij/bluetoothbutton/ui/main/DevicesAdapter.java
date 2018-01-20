@@ -1,12 +1,13 @@
-package com.klaks.evgenij.bluetoothbutton;
+package com.klaks.evgenij.bluetoothbutton.ui.main;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
+
+import com.klaks.evgenij.bluetoothbutton.R;
 
 import java.util.ArrayList;
 import java.util.List;

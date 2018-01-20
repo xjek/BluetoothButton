@@ -1,15 +1,15 @@
 package com.klaks.evgenij.bluetoothbutton.model;
 
 public class Button {
-    private String id = "";
+    private int id = 0;
     private String nameButton = "";
     private String name = "";
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

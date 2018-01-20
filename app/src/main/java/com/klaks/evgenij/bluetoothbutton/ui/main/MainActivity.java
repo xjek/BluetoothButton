@@ -1,9 +1,8 @@
-package com.klaks.evgenij.bluetoothbutton;
+package com.klaks.evgenij.bluetoothbutton.ui.main;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
@@ -20,15 +19,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.klaks.evgenij.bluetoothbutton.model.ResponseBody;
-import com.klaks.evgenij.bluetoothbutton.network.ApiFactory;
-import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
+import com.klaks.evgenij.bluetoothbutton.ButtonWorking;
+import com.klaks.evgenij.bluetoothbutton.R;
+import com.klaks.evgenij.bluetoothbutton.ScanCallback;
+import com.klaks.evgenij.bluetoothbutton.ui.tovar.TovarActivity;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity implements DevicesAdapter.DevicesAdapterListener, ButtonWorking.ButtonWorkingListener {
 
@@ -63,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         bluetoothAdapter = bluetoothManager.getAdapter();
 
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
-        checkOnBluetooth();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleWithFixedDelay(new Runnable() {
@@ -78,8 +75,14 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
             }
         }, 0, 2, TimeUnit.SECONDS);
 
+        onResponseIsReceived("1-ffgsshsh");
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkOnBluetooth();
+    }
 
     private void checkOnBluetooth() {
         if (!bluetoothAdapter.isEnabled()) {
@@ -152,9 +155,19 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
                 @Override
                 public void run() {
                     bluetoothLeScanner.startScan(scanCallback);
+                    scannerIsOn = true;
                 }
             });
 
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (scannerIsOn) {
+            bluetoothLeScanner.stopScan(scanCallback);
+            scannerIsOn = false;
         }
     }
 
@@ -165,18 +178,8 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
 
     @Override
     public void onResponseIsReceived(String response) {
-        ApiFactory.getService().infoButton(response)
-                .compose(new HelpTransformer<ResponseBody>())
-                .subscribe(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody responseBody) throws Exception {
-                        System.out.println(responseBody);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                    }
-                });
+        Intent intent = new Intent(this, TovarActivity.class);
+        intent.putExtra("button", response);
+        startActivity(intent);
     }
 }

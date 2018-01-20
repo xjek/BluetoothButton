@@ -6,7 +6,7 @@ public class ResponseBody {
     private int status = 0;
     private Button button;
     private Organization organization;
-    private List<Tovar> tovars;
+    private List<Tovar> tovar;
 
     public int getStatus() {
         return status;
@@ -33,11 +33,11 @@ public class ResponseBody {
     }
 
     public List<Tovar> getTovars() {
-        return tovars;
+        return tovar;
     }
 
     public void setTovars(List<Tovar> tovars) {
-        this.tovars = tovars;
+        this.tovar = tovars;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ResponseBody {
                 "status=" + status +
                 ", button=" + button +
                 ", organization=" + organization +
-                ", tovars=" + tovars +
+                ", tovars=" + tovar +
                 '}';
     }
 }
