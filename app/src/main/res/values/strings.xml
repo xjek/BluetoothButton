@@ -2,4 +2,17 @@
     <string name="app_name">Klaks</string>
     <string name="supplier">Поставщик:</string>
     <string name="product_group">Группа товаров:</string>
+    <string name="title_activity_login">Вход</string>
+    <string name="error_network_available">Нет подключения к интернету</string>
+    <string name="cher_network">Проверить</string>
+    <string name="send_order">Отправить заказ</string>
+
+    <string name="phone">Номер телефона</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="error_invalid_phone">Номер телефона введен неверно</string>
+    <string name="error_invalid_password">Пароль слишком короткий</string>
+    <string name="error_incorrect_password">Неверный пароль</string>
+    <string name="error_field_required">Обязательное поле</string>
+    <string name="action_sign_in_short">Войти</string>
 </resources>
