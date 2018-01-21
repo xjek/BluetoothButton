@@ -5,7 +5,23 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class QueryPreferences {
-    private static final String PREF_TOKEN = "token"; // токен для сервера
+    private static final String PREF_TOKEN = "token";
+    private static final String PREF_PHONE = "phone";
+    private static final String PREF_PASSWORD = "password";
+
+    public static void setPhoneAndPassword(Context context, String phone, String password) {
+        setString(context, PREF_PHONE, phone);
+        setString(context, PREF_PASSWORD, password);
+    }
+
+    public static String[] getPhoneAndPassword(Context context) {
+        String phone = getString(context, PREF_PHONE);
+        String password = getString(context, PREF_PASSWORD);
+        if (phone.isEmpty() || password.isEmpty()) {
+            return null;
+        }
+        return new String[]{phone, password};
+    }
 
     public static void setToken(Context context, String token) {
         setString(context, PREF_TOKEN, token);

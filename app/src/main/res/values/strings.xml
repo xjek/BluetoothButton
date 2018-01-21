@@ -7,6 +7,8 @@
     <string name="cher_network">Проверить</string>
     <string name="send_order">Отправить заказ</string>
 
+    <string name="error_noname">Произошла неизвестная ошибка</string>
+    <string name="error_phone_or_password">Неверный номер телефона/пароль</string>
     <string name="phone">Номер телефона</string>
     <string name="password">Пароль</string>
     <string name="sign_in">Войти</string>

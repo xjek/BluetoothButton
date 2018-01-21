@@ -55,6 +55,13 @@ public class ApiFactory {
 
     private static OkHttpClient createClient() {
         return new OkHttpClient.Builder()
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        System.out.println("CHAIN " + chain.request().url());
+                        return chain.proceed(chain.request());
+                    }
+                })
                 .build();
     }
 }

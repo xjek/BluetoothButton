@@ -77,7 +77,6 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
                 addRemoveCount(holder, false);
             }
         });
-
     }
 
     private Spanned getHtml(String text) {
@@ -94,7 +93,8 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
         if (add) {
             tovar.setCount(tovar.getCount() + 1);
         } else {
-            tovar.setCount(tovar.getCount() - 1);
+            if (tovar.getCount() != 0)
+                tovar.setCount(tovar.getCount() - 1);
         }
         holder.count.setText(String.format(Locale.getDefault(), "%1d", tovar.getCount()));
     }

@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.klaks.evgenij.bluetoothbutton.QueryPreferences;
 import com.klaks.evgenij.bluetoothbutton.R;
+import com.klaks.evgenij.bluetoothbutton.model.Auth;
 import com.klaks.evgenij.bluetoothbutton.network.ApiFactory;
 import com.klaks.evgenij.bluetoothbutton.ui.BaseActivity;
 import com.klaks.evgenij.bluetoothbutton.ui.main.MainActivity;
@@ -33,11 +35,14 @@ public class LoginActivity extends BaseActivity {
     private EditText password;
     private View progressView;
     private View loginFormView;
+    private TextView mainError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mainError = findViewById(R.id.main_error);
 
         phone =  findViewById(R.id.email);
 
@@ -63,12 +68,22 @@ public class LoginActivity extends BaseActivity {
 
         loginFormView = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
+
+        String[] data = QueryPreferences.getPhoneAndPassword(this);
+        if (data != null) {
+            phone.setText(data[0]);
+            password.setText(data[1]);
+        } else {
+            phone.setText("89025780492");
+            password.setText("12345678");
+        }
     }
 
     private void attemptLogin() {
 
         phone.setError(null);
         password.setError(null);
+        setMainError(0);
 
         String phone = this.phone.getText().toString();
         String password = this.password.getText().toString();
@@ -138,27 +153,47 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void singIn(String phone, String password) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void singIn(final String phone, final String password) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        LoginActivity.this.finish();
         /*if (checkNetworkState()) {
             ApiFactory.getService()
                     .signIn(phone, password)
-                    .compose(new HelpTransformer<String>())
+                    .compose(new HelpTransformer<Auth>())
                     .subscribe(
-                            new Consumer<String>() {
+                            new Consumer<Auth>() {
                                 @Override
-                                public void accept(String s) throws Exception {
-                                    System.out.println("ANSWER " + s);
+                                public void accept(Auth auth) throws Exception {
+                                    System.out.println(auth);
+                                    if (auth.isError()) {
+                                        setMainError(R.string.error_phone_or_password);
+                                        showProgress(false);
+                                    } else {
+                                        QueryPreferences.setPhoneAndPassword(LoginActivity.this, phone, password);
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        LoginActivity.this.finish();
+                                    }
                                 }
                             },
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
                                     throwable.printStackTrace();
+                                    setMainError(R.string.error_noname);
                                 }
                             });
         }*/
+    }
+
+    private void setMainError(int error) {
+        if (error == 0) {
+            mainError.setVisibility(View.GONE);
+        } else {
+            mainError.setText(error);
+            mainError.setVisibility(View.VISIBLE);
+        }
     }
 }
 
