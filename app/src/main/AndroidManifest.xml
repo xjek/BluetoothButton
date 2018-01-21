@@ -32,7 +32,8 @@
         <activity
             android:name=".ui.tovar.TovarActivity"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"/>
         <activity android:name=".ui.networkAvailable.NetworkAvailableActivity"/>
     </application>
 

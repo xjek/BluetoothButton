@@ -1,108 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="8dp">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ProgressBar
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:id="@+id/progressBar"
-        android:visibility="gone"/>
-
-    <RelativeLayout
-        android:id="@+id/contentContainer"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/colorPrimary">
+    </android.support.v7.widget.Toolbar>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:visibility="gone"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/tovar_info">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/supplier"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/suppplier"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Рога и Копыта"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/product_group"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/product_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Рога и Копыта"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/linearLayout"
-            android:background="@color/gray"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <RelativeLayout
+            android:id="@+id/contentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/button"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/line" />
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/tovar_info">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/supplier"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/suppplier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Рога и Копыта"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/product_group"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/product_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Рога и Копыта"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout"
+                android:background="@color/gray"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/button"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/line" />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/button_send_order_selector"
-            android:id="@+id/button"
-            android:text="@string/send_order"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-    </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/button_send_order_selector"
+                android:id="@+id/button"
+                android:text="@string/send_order"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+        </RelativeLayout>
+    </FrameLayout>
 
 
 
-</FrameLayout>
+
+
+</LinearLayout>

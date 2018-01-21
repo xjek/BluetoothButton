@@ -2,10 +2,13 @@ package com.klaks.evgenij.bluetoothbutton.ui.tovar;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,6 +33,10 @@ public class TovarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tovar);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         progressBar = findViewById(R.id.progressBar);
         contentContainer = findViewById(R.id.contentContainer);
         supplier = findViewById(R.id.suppplier);
@@ -42,6 +49,8 @@ public class TovarActivity extends AppCompatActivity {
 
         String button = getIntent().getStringExtra("button");
         loadTovar(button);
+
+
     }
 
     private void loadTovar(String button) {
@@ -63,6 +72,17 @@ public class TovarActivity extends AppCompatActivity {
                         throwable.printStackTrace();
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /*{
