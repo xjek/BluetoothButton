@@ -1,12 +1,16 @@
 package com.klaks.evgenij.bluetoothbutton.ui.tovar;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +41,7 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
         ImageView image;
         TextView price;
         ImageButton remove;
-        TextView count;
+        EditText count;
         ImageButton add;
         TextView description;
 
@@ -60,7 +64,7 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(final Holder holder, int position) {
-        Tovar tovar = this.tovar.get(position);
+        final Tovar tovar = this.tovar.get(position);
         holder.name.setText(tovar.getName());
         holder.price.setText(tovar.getStringPrice());
         holder.count.setText(tovar.getStringCount());
@@ -80,6 +84,29 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
             public void onClick(View view) {
                 addRemoveCount(holder, false);
             }
+        });
+
+        holder.count.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    int count = Integer.valueOf(charSequence.toString());
+                    if (count < 0) {
+                        holder.count.setText("0");
+                    } else {
+                        tovar.setCount(count);
+                        changedCountAndPrice();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
     }
 
