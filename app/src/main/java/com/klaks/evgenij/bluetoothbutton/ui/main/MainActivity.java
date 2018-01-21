@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
 
-        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        //bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleWithFixedDelay(new Runnable() {
@@ -85,12 +85,12 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
     }
 
     private void checkOnBluetooth() {
-        if (!bluetoothAdapter.isEnabled()) {
+        /*if (!bluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         } else {
             checkPermission();
-        }
+        }*/
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
     }
 
     private void startScan() {
-        if (!scannerIsOn) {
+        /*if (!scannerIsOn) {
             if (bluetoothLeScanner == null) {
                 bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
             }
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
                 }
             });
 
-        }
+        }*/
     }
 
     @Override

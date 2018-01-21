@@ -58,8 +58,20 @@ public class Tovar {
         this.count = count;
     }
 
-    public String getTotalPrice() {
-        return String.format(Locale.getDefault(),"%3.2f р.", count * price);
+    public String getStringPrice() {
+        return getFormatPrice(price);
+    }
+
+    public String getStringCount() {
+        return getFormatCount(count);
+    }
+
+    public static String getFormatPrice(double price) {
+        return String.format(Locale.getDefault(),"%1.2f р.", price);
+    }
+
+    public static String getFormatCount(int count) {
+        return String.format(Locale.getDefault(), "%1d", count);
     }
 
     @Override

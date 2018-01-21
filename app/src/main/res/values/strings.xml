@@ -17,4 +17,7 @@
     <string name="error_incorrect_password">Неверный пароль</string>
     <string name="error_field_required">Обязательное поле</string>
     <string name="action_sign_in_short">Войти</string>
+
+    <string name="count">Количество:</string>
+    <string name="total_price">Общая цена:</string>
 </resources>

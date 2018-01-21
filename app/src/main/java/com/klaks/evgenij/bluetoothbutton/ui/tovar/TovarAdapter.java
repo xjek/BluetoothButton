@@ -22,9 +22,13 @@ import java.util.Locale;
 public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
 
     private List<Tovar> tovar;
+    private TovarAdapterListener listener;
+    private int count = 0;
+    private double price = 0.0;
 
-    public TovarAdapter(List<Tovar> tovar) {
+    public TovarAdapter(List<Tovar> tovar, TovarAdapterListener listener) {
         this.tovar = tovar;
+        this.listener = listener;
     }
 
     static class Holder extends RecyclerView.ViewHolder {
@@ -58,8 +62,8 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
     public void onBindViewHolder(final Holder holder, int position) {
         Tovar tovar = this.tovar.get(position);
         holder.name.setText(tovar.getName());
-        holder.price.setText(String.format(Locale.getDefault(),"%1.2f р.", tovar.getPrice()));
-        holder.count.setText(String.format(Locale.getDefault(), "%1d", tovar.getCount()));
+        holder.price.setText(tovar.getStringPrice());
+        holder.count.setText(tovar.getStringCount());
         holder.description.setText(getHtml(tovar.getDescription()));
         Picasso.with(holder.name.getContext())
                 .load(Common.BASE_URL + tovar.getImage())
@@ -97,10 +101,25 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
                 tovar.setCount(tovar.getCount() - 1);
         }
         holder.count.setText(String.format(Locale.getDefault(), "%1d", tovar.getCount()));
+        changedCountAndPrice();
+    }
+
+    private void changedCountAndPrice() {
+        count = 0;
+        price = 0.0;
+        for (Tovar tovar : this.tovar) {
+            count += tovar.getCount();
+            price += tovar.getCount() * tovar.getPrice();
+        }
+        listener.onCountChanged(count, price);
     }
 
     @Override
     public int getItemCount() {
         return tovar.size();
+    }
+
+    public interface TovarAdapterListener {
+        void onCountChanged(int count, double price);
     }
 }

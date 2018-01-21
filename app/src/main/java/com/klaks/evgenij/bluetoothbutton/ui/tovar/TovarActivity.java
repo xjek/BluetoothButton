@@ -14,12 +14,13 @@ import android.widget.TextView;
 
 import com.klaks.evgenij.bluetoothbutton.R;
 import com.klaks.evgenij.bluetoothbutton.model.ResponseBody;
+import com.klaks.evgenij.bluetoothbutton.model.Tovar;
 import com.klaks.evgenij.bluetoothbutton.network.ApiFactory;
 import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
 
 import io.reactivex.functions.Consumer;
 
-public class TovarActivity extends AppCompatActivity {
+public class TovarActivity extends AppCompatActivity implements TovarAdapter.TovarAdapterListener {
 
     private View progressBar;
     private View contentContainer;
@@ -28,14 +29,19 @@ public class TovarActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TovarAdapter tovarAdapter;
 
+    private TextView totalCount;
+    private TextView totalPrice;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tovar);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         progressBar = findViewById(R.id.progressBar);
         contentContainer = findViewById(R.id.contentContainer);
@@ -47,10 +53,11 @@ public class TovarActivity extends AppCompatActivity {
         DividerItemDecoration decoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         recyclerView.addItemDecoration(decoration);
 
+        totalCount = findViewById(R.id.totalCount);
+        totalPrice = findViewById(R.id.totalPrice);
+
         String button = getIntent().getStringExtra("button");
         loadTovar(button);
-
-
     }
 
     private void loadTovar(String button) {
@@ -61,7 +68,7 @@ public class TovarActivity extends AppCompatActivity {
                     public void accept(ResponseBody responseBody) throws Exception {
                         supplier.setText(responseBody.getOrganization().getName());
                         productGroup.setText(responseBody.getButton().getName());
-                        tovarAdapter = new TovarAdapter(responseBody.getTovars());
+                        tovarAdapter = new TovarAdapter(responseBody.getTovars(), TovarActivity.this);
                         recyclerView.setAdapter(tovarAdapter);
                         progressBar.setVisibility(View.GONE);
                         contentContainer.setVisibility(View.VISIBLE);
@@ -83,6 +90,12 @@ public class TovarActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onCountChanged(int count, double price) {
+        totalCount.setText(Tovar.getFormatCount(count));
+        totalPrice.setText(Tovar.getFormatPrice(price));
     }
 
     /*{
