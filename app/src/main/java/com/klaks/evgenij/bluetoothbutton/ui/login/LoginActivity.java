@@ -73,9 +73,6 @@ public class LoginActivity extends BaseActivity {
         if (data != null) {
             phone.setText(data[0]);
             password.setText(data[1]);
-        } else {
-            phone.setText("89025780492");
-            password.setText("12345678");
         }
     }
 
