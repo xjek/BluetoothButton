@@ -25,7 +25,6 @@ import com.klaks.evgenij.bluetoothbutton.ButtonWorking;
 import com.klaks.evgenij.bluetoothbutton.R;
 import com.klaks.evgenij.bluetoothbutton.Scanner;
 import com.klaks.evgenij.bluetoothbutton.ui.tovar.TovarActivity;
-import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,9 +33,6 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity implements DevicesAdapter.DevicesAdapterListener,
         ButtonWorking.ButtonWorkingListener,

@@ -2,6 +2,7 @@ package com.klaks.evgenij.bluetoothbutton.network;
 
 import com.klaks.evgenij.bluetoothbutton.model.Auth;
 import com.klaks.evgenij.bluetoothbutton.model.ResponseBody;
+import com.klaks.evgenij.bluetoothbutton.model.Result;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -20,6 +21,7 @@ public interface SupplierService {
     @GET("getbutton/InfoButton/{button}")
     Observable<ResponseBody> infoButton(@Path("button") String button);
 
+    @FormUrlEncoded
     @POST("getzakaz")
-    Observable<String> sendOrder(@Query("json") String json);
+    Observable<Result> sendOrder(@Field("json") String json);
 }

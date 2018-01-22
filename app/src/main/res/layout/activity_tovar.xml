@@ -65,7 +65,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:id="@+id/progressBar"/>
+            android:id="@+id/progressBar"
+            android:visibility="visible"/>
 
         <RelativeLayout
             android:id="@+id/contentContainer"
@@ -157,10 +158,29 @@
                 android:textStyle="bold"
                 android:gravity="center"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/successView"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_success"
+                android:id="@+id/imageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:layout_centerHorizontal="true"
+                android:text="@string/order_success"
+                android:textSize="25sp" />
+        </RelativeLayout>
     </FrameLayout>
-
-
-
-
 
 </LinearLayout>

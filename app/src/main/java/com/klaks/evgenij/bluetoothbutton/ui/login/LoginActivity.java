@@ -154,10 +154,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void singIn(final String phone, final String password) {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        /*Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
-        LoginActivity.this.finish();
-        /*if (checkNetworkState()) {
+        LoginActivity.this.finish();*/
+        if (checkNetworkState()) {
             ApiFactory.getService()
                     .signIn(phone, password)
                     .compose(new HelpTransformer<Auth>())
@@ -171,6 +171,7 @@ public class LoginActivity extends BaseActivity {
                                         showProgress(false);
                                     } else {
                                         QueryPreferences.setPhoneAndPassword(LoginActivity.this, phone, password);
+                                        QueryPreferences.setToken(LoginActivity.this, auth.getToken());
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         LoginActivity.this.finish();
@@ -184,7 +185,7 @@ public class LoginActivity extends BaseActivity {
                                     setMainError(R.string.error_noname);
                                 }
                             });
-        }*/
+        }
     }
 
     private void setMainError(int error) {

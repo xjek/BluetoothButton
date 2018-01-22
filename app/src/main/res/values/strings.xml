@@ -22,4 +22,6 @@
 
     <string name="count">Количество:</string>
     <string name="total_price">Общая цена:</string>
+    <string name="select_tovar_for_send_order">Выберите товары для отправки</string>
+    <string name="order_success">Заказ успешно отправлен!</string>
 </resources>
