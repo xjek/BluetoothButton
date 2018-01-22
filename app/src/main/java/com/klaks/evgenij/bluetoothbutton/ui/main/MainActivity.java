@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         if (Build.VERSION.SDK_INT >= 23) {
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("This app needs location access");
-                builder.setMessage("Please grant location access so this app can detect peripherals.");
+                builder.setTitle(R.string.location_access);
+                builder.setMessage(R.string.grant_location_access);
                 builder.setPositiveButton(android.R.string.ok, null);
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
                     startScan();
                 } else {
                     final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.setTitle(R.string.functionality_limited);
+                    builder.setMessage(R.string.no_grant_location_access);
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
