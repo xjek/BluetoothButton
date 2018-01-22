@@ -3,6 +3,7 @@ package com.klaks.evgenij.bluetoothbutton.ui.main;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
@@ -18,28 +19,41 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.klaks.evgenij.bluetoothbutton.ButtonWorking;
 import com.klaks.evgenij.bluetoothbutton.R;
-import com.klaks.evgenij.bluetoothbutton.ScanCallback;
+import com.klaks.evgenij.bluetoothbutton.Scanner;
 import com.klaks.evgenij.bluetoothbutton.ui.tovar.TovarActivity;
+import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements DevicesAdapter.DevicesAdapterListener, ButtonWorking.ButtonWorkingListener {
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+
+public class MainActivity extends AppCompatActivity implements DevicesAdapter.DevicesAdapterListener,
+        ButtonWorking.ButtonWorkingListener,
+        Scanner.ScannerListener{
 
     private final static int REQUEST_ENABLE_BT = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     private BluetoothLeScanner bluetoothLeScanner;
     private BluetoothAdapter bluetoothAdapter;
-    private ScanCallback scanCallback = new ScanCallback();
-    private ButtonWorking bluetoothCallback = new ButtonWorking(this);
+    private Scanner scanner = new Scanner(this);
 
     private RecyclerView recyclerView;
     private DevicesAdapter devicesAdapter;
+    private TextView process;
+
+    private Map<BluetoothDevice, ButtonWorking> connectedButtons = Collections.synchronizedMap(new HashMap<BluetoothDevice, ButtonWorking>());
 
     private boolean scannerIsOn;
 
@@ -48,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        process = findViewById(R.id.process);
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -69,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        devicesAdapter.setDevices(scanCallback.getDevicesList());
+                        devicesAdapter.setDevices(scanner.getDevicesList());
                     }
                 });
             }
@@ -126,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         switch (requestCode) {
             case PERMISSION_REQUEST_COARSE_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    System.out.println("coarse location permission granted");
                     startScan();
                 } else {
                     final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -151,10 +165,11 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
             if (bluetoothLeScanner == null) {
                 bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
             }
+            process.setText(R.string.process_scanning);
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
-                    bluetoothLeScanner.startScan(scanCallback);
+                    bluetoothLeScanner.startScan(scanner);
                     scannerIsOn = true;
                 }
             });
@@ -166,20 +181,40 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
     protected void onStop() {
         super.onStop();
         if (scannerIsOn) {
-            bluetoothLeScanner.stopScan(scanCallback);
-            scannerIsOn = false;
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    bluetoothLeScanner.stopScan(scanner);
+                    scannerIsOn = false;
+                }
+            });
+
         }
     }
 
     @Override
     public void onDeviceClick(BluetoothDevice bluetoothDevice) {
-        bluetoothDevice.connectGatt(this, false, bluetoothCallback);
+        process.setText(R.string.process_connecting);
+        ButtonWorking buttonWorking = new ButtonWorking(this);
+        bluetoothDevice.connectGatt(this, false, buttonWorking);
+        connectedButtons.put(bluetoothDevice, buttonWorking);
     }
 
     @Override
-    public void onResponseIsReceived(String response) {
-        Intent intent = new Intent(this, TovarActivity.class);
+    public void onButtonDisconnected(BluetoothGatt gatt) {
+        BluetoothDevice device = gatt.getDevice();
+        connectedButtons.remove(device);
+    }
+
+    @Override
+    public void onResponseIsReceived(final BluetoothGatt gatt, final String response) {
+        Intent intent = new Intent(MainActivity.this, TovarActivity.class);
         intent.putExtra("button", response);
         startActivity(intent);
+    }
+
+    @Override
+    public Set<BluetoothDevice> getConnectedDevices() {
+        return connectedButtons.keySet();
     }
 }

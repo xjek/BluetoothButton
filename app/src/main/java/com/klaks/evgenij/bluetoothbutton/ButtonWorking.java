@@ -26,14 +26,20 @@ public class ButtonWorking extends BluetoothGattCallback {
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
         switch (newState) {
             case 0:
+                listener.onButtonDisconnected(gatt);
                 Log.d(TAG, "Device disconnected");
                 break;
             case 2:
                 Log.d(TAG, "Device connected");
                 gatt.discoverServices();
                 break;
+            case 3:
+                Log.d(TAG, "Device don`t know what do");
+                break;
         }
     }
+
+
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
@@ -52,12 +58,14 @@ public class ButtonWorking extends BluetoothGattCallback {
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        listener.onResponseIsReceived(new String(characteristic.getValue()));
+        String value = new String(characteristic.getValue());
         characteristic.setValue(BUTTON_MESSAGE_OK.getBytes());
         gatt.writeCharacteristic(characteristic);
+        listener.onResponseIsReceived(gatt, value);
     }
 
     public interface ButtonWorkingListener {
-        void onResponseIsReceived(String response);
+        void onResponseIsReceived(BluetoothGatt gatt, String response);
+        void onButtonDisconnected(BluetoothGatt gatt);
     }
 }

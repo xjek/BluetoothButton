@@ -6,6 +6,8 @@
     <string name="error_network_available">Нет подключения к интернету</string>
     <string name="cher_network">Проверить</string>
     <string name="send_order">Отправить заказ</string>
+    <string name="process_scanning">Сканирование…</string>
+    <string name="process_connecting">Подключение…</string>
 
     <string name="error_noname">Произошла неизвестная ошибка</string>
     <string name="error_phone_or_password">Неверный номер телефона/пароль</string>
