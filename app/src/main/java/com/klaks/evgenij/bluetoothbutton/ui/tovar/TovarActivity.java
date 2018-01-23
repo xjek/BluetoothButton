@@ -2,7 +2,6 @@ package com.klaks.evgenij.bluetoothbutton.ui.tovar;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.klaks.evgenij.bluetoothbutton.Common;
@@ -23,7 +23,6 @@ import com.klaks.evgenij.bluetoothbutton.model.Result;
 import com.klaks.evgenij.bluetoothbutton.model.Tovar;
 import com.klaks.evgenij.bluetoothbutton.network.ApiFactory;
 import com.klaks.evgenij.bluetoothbutton.ui.BaseActivity;
-import com.klaks.evgenij.bluetoothbutton.ui.login.LoginActivity;
 import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
 
 import io.reactivex.disposables.Disposable;
@@ -100,7 +99,9 @@ public class TovarActivity extends BaseActivity implements TovarAdapter.TovarAda
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        Crashlytics.logException(throwable);
                         throwable.printStackTrace();
+                        Toast.makeText(TovarActivity.this, R.string.error_noname, Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -167,6 +168,7 @@ public class TovarActivity extends BaseActivity implements TovarAdapter.TovarAda
                                 new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
+                                        Crashlytics.logException(throwable);
                                         Log.d(Common.TAG, "ОШИБКА "  + throwable.getMessage());
                                         showContent();
                                         Toast.makeText(TovarActivity.this, R.string.error_noname, Toast.LENGTH_LONG).show();

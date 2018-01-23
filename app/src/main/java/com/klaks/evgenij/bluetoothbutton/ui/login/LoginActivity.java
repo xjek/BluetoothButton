@@ -3,7 +3,6 @@ package com.klaks.evgenij.bluetoothbutton.ui.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.klaks.evgenij.bluetoothbutton.QueryPreferences;
 import com.klaks.evgenij.bluetoothbutton.R;
 import com.klaks.evgenij.bluetoothbutton.model.Auth;
@@ -26,9 +26,6 @@ import com.klaks.evgenij.bluetoothbutton.util.HelpTransformer;
 
 import io.reactivex.functions.Consumer;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends BaseActivity {
 
     private AutoCompleteTextView phone;
@@ -88,14 +85,12 @@ public class LoginActivity extends BaseActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             this.password.setError(getString(R.string.error_invalid_password));
             focusView = this.password;
             cancel = true;
         }
 
-        // Check for a valid email address.
         if (TextUtils.isEmpty(phone)) {
             this.phone.setError(getString(R.string.error_field_required));
             focusView = this.phone;
@@ -178,6 +173,7 @@ public class LoginActivity extends BaseActivity {
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
+                                    Crashlytics.logException(throwable);
                                     throwable.printStackTrace();
                                     setMainError(R.string.error_noname);
                                 }
