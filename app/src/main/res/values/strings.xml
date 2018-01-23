@@ -24,6 +24,7 @@
     <string name="grant_location_access">Пожалуйста, разрешите доступ к местоположению для корректной работы</string>
     <string name="functionality_limited">Функциональность ограничена</string>
     <string name="no_grant_location_access">Поскольку доступ к местоположению не был предоставлен, это приложение не сможет обнаружить bluetooth устройства.</string>
+    <string name="press_button_klaks">Нажмите кнопку Klaks</string>
 
     <string name="count">Количество:</string>
     <string name="total_price">Общая цена:</string>

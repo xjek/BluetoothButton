@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.klaks.evgenij.bluetoothbutton.ButtonWorking;
@@ -28,6 +29,9 @@ import com.klaks.evgenij.bluetoothbutton.ui.tovar.TovarActivity;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
     private RecyclerView recyclerView;
     private DevicesAdapter devicesAdapter;
     private TextView process;
+    private TextView pressButtonText;
 
     private Map<BluetoothDevice, ButtonWorking> connectedButtons = Collections.synchronizedMap(new HashMap<BluetoothDevice, ButtonWorking>());
 
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         devicesAdapter = new DevicesAdapter(this);
         recyclerView.setAdapter(devicesAdapter);
 
+        pressButtonText = findViewById(R.id.pressButtonText);
+
 
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
@@ -80,7 +87,13 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        devicesAdapter.setDevices(scanner.getDevicesList());
+                        List<BluetoothDevice> devices = scanner.getDevicesList();
+                        devicesAdapter.setDevices(devices);
+                        if (devices.isEmpty()) {
+                            pressButtonText.setVisibility(View.VISIBLE);
+                        } else {
+                            pressButtonText.setVisibility(View.GONE);
+                        }
                     }
                 });
             }
@@ -190,10 +203,10 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
 
     @Override
     public void onDeviceClick(BluetoothDevice bluetoothDevice) {
-        process.setText(R.string.process_connecting);
+        /*process.setText(R.string.process_connecting);
         ButtonWorking buttonWorking = new ButtonWorking(this);
         bluetoothDevice.connectGatt(this, false, buttonWorking);
-        connectedButtons.put(bluetoothDevice, buttonWorking);
+        connectedButtons.put(bluetoothDevice, buttonWorking);*/
     }
 
     @Override

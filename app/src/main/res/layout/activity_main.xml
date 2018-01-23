@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout2">
         <ProgressBar
             android:layout_width="20dp"
             android:layout_height="20dp"/>
@@ -20,15 +23,31 @@
             android:id="@+id/process"
             android:textSize="16sp"/>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout2"
         android:background="@color/gray"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:id="@+id/view" />
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view"/>
+        android:layout_above="@+id/pressButtonText"
+        android:layout_below="@+id/view" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/press_button_klaks"
+        android:layout_alignParentBottom="true"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/pressButtonText"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="visible"/>
 
-</LinearLayout>
+</RelativeLayout>
