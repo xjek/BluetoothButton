@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
                         if (devices.isEmpty()) {
                             pressButtonText.setVisibility(View.VISIBLE);
                         } else {
+                            connectedToButton(devices.get(0));
                             pressButtonText.setVisibility(View.GONE);
                         }
                     }
@@ -207,6 +208,13 @@ public class MainActivity extends AppCompatActivity implements DevicesAdapter.De
         ButtonWorking buttonWorking = new ButtonWorking(this);
         bluetoothDevice.connectGatt(this, false, buttonWorking);
         connectedButtons.put(bluetoothDevice, buttonWorking);*/
+    }
+
+    private void connectedToButton(BluetoothDevice bluetoothDevice) {
+        process.setText(R.string.process_connecting);
+        ButtonWorking buttonWorking = new ButtonWorking(this);
+        bluetoothDevice.connectGatt(this, false, buttonWorking);
+        connectedButtons.put(bluetoothDevice, buttonWorking);
     }
 
     @Override
