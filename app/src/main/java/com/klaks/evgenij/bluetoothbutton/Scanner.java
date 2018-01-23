@@ -31,7 +31,7 @@ public class Scanner extends android.bluetooth.le.ScanCallback {
         BluetoothDevice device = result.getDevice();
         if (!listener.getConnectedDevices().contains(device)) {
             if (device.getName() != null) {
-                Matcher matcher = pattern.matcher(device.getName());
+                Matcher matcher = pattern.matcher(device.getName().toLowerCase());
                 if (matcher.matches()) {
                     devices.put(result.getDevice().getAddress(), result.getDevice());
                 }
