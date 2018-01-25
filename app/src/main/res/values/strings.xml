@@ -9,7 +9,7 @@
     <string name="process_scanning">Сканирование…</string>
     <string name="process_connecting">Подключение…</string>
 
-    <string name="error_noname">Произошла неизвестная ошибка</string>
+    <string name="error_noname">Технические работы. Повторите позже.</string>
     <string name="error_phone_or_password">Неверный номер телефона/пароль</string>
     <string name="phone">Номер телефона</string>
     <string name="password">Пароль</string>
