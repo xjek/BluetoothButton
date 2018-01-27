@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,6 +23,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
 
@@ -73,15 +76,23 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
                 .load(Common.BASE_URL + tovar.getImage())
                 .into(holder.image);
 
+        final FocusChange focusChange = new FocusChange();
+
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                focusChange.hideSoftKeyboard(holder.count);
+                holder.count.clearFocus();
                 addRemoveCount(holder, true);
             }
         });
+
+
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                focusChange.hideSoftKeyboard(holder.count);
+                holder.count.clearFocus();
                 addRemoveCount(holder, false);
             }
         });
@@ -108,6 +119,7 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+        holder.count.setOnFocusChangeListener(focusChange);
     }
 
     private Spanned getHtml(String text) {
@@ -144,6 +156,22 @@ public class TovarAdapter extends RecyclerView.Adapter<TovarAdapter.Holder> {
     @Override
     public int getItemCount() {
         return tovar.size();
+    }
+
+
+    private static class FocusChange implements View.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+            if (!hasFocus) {
+                hideSoftKeyboard(view);
+            }
+        }
+
+        void hideSoftKeyboard(View view) {
+            InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(INPUT_METHOD_SERVICE);
+            if (inputMethodManager != null)
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public interface TovarAdapterListener {

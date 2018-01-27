@@ -35,7 +35,7 @@
             android:parentActivityName=".ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
-        <activity android:name=".ui.networkAvailable.NetworkAvailableActivity"/>
+        <activity android:name=".ui.networkAvailable.NetworkAvailableActivity" android:windowSoftInputMode="stateHidden"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="5943e7b2b8c1af2e117d6d0e82715b8491087435" />
